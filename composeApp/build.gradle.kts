@@ -51,6 +51,8 @@ kotlin {
             // Navigation
             implementation(libs.navigation.compose)
             implementation(libs.coil.compose)
+            implementation(libs.material.icons.extended)
+
 
         }
         commonTest.dependencies {
