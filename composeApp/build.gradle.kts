@@ -1,6 +1,5 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -14,16 +13,17 @@ kotlin {
     androidTarget()
     jvm("desktop")
 
-    val iosTargets = listOf(
+
+    val xcf = XCFramework()
+    listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    )
-
-    iosTargets.forEach {
+    ).forEach {
         it.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            xcf.add(this)
         }
     }
 
