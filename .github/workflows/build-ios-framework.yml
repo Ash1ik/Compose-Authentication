@@ -20,11 +20,10 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Make XCFramework
-        run: ./gradlew :composeApp:assembleReleaseXCFramework
+        run: ./gradlew :composeApp:assembleReleaseXCFramework --stacktrace --info
 
       - name: Upload XCFramework artifact
-  uses: actions/upload-artifact@v4
-  with:
-    name: ComposeApp.xcframework
-    path: composeApp/build/XCFrameworks/release/ComposeApp.xcframework
-
+        uses: actions/upload-artifact@v4
+        with:
+          name: ComposeApp.xcframework
+          path: composeApp/build/XCFrameworks/release/ComposeApp.xcframework
