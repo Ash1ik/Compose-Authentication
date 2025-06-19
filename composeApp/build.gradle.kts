@@ -11,12 +11,8 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-    }
+    androidTarget()
+    jvm("desktop")
 
     val iosTargets = listOf(
         iosX64(),
@@ -31,38 +27,45 @@ kotlin {
         }
     }
 
-    jvm("desktop")
-
     sourceSets {
-        val desktopMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
+                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(libs.androidx.lifecycle.runtimeCompose)
+                implementation(libs.navigation.compose)
+                implementation(libs.coil.compose)
+                implementation(libs.material.icons.extended)
+            }
+        }
 
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.androidx.activity.compose)
+        val androidMain by getting {
+            dependencies {
+                implementation(compose.preview)
+                implementation(libs.androidx.activity.compose)
+            }
         }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-            implementation(libs.androidx.lifecycle.viewmodel)
-            implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation(libs.navigation.compose)
-            implementation(libs.coil.compose)
-            implementation(libs.material.icons.extended)
+        val desktopMain by getting {
+            dependencies {
+                implementation(compose.desktop.currentOs)
+                implementation(libs.kotlinx.coroutinesSwing)
+            }
         }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-        }
-        desktopMain.dependencies {
-            implementation(compose.desktop.currentOs)
-            implementation(libs.kotlinx.coroutinesSwing)
+
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
         }
     }
 }
+
 
 
 android {
