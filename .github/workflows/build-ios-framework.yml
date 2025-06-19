@@ -22,8 +22,13 @@ jobs:
       - name: Make XCFramework
         run: ./gradlew :composeApp:assembleReleaseXCFramework --stacktrace --info
 
+      - name: Show available Gradle tasks
+        run: ./gradlew :composeApp:tasks --all
+
+
       - name: Upload XCFramework artifact
         uses: actions/upload-artifact@v4
         with:
           name: ComposeApp.xcframework
           path: composeApp/build/XCFrameworks/release/ComposeApp.xcframework
+          
