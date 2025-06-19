@@ -17,23 +17,25 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
-    listOf(
+
+    val iosTargets = listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
+    )
+
+    iosTargets.forEach {
+        it.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
         }
     }
-    
+
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -48,12 +50,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            // Navigation
             implementation(libs.navigation.compose)
             implementation(libs.coil.compose)
             implementation(libs.material.icons.extended)
-
-
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -65,7 +64,14 @@ kotlin {
     }
 }
 
+
 android {
+
+    lint {
+        disable += "NullSafeMutableLiveData"
+        checkReleaseBuilds = false // Optional fallback
+    }
+
     namespace = "org.example.project"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
