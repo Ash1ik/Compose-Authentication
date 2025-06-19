@@ -1,4 +1,4 @@
-package org.example.project.common
+package ui.common
 
 
 import androidx.compose.foundation.layout.height
@@ -14,11 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun CustomizedButton(name: String) {
+fun CustomizedButton(name: String, onClick: () -> Unit) {
     Button(
-        onClick = {
-
-        },
+        onClick = onClick,
         modifier = Modifier
             .width(342.dp)
             .height(56.32456.dp),

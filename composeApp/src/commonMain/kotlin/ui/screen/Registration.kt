@@ -1,6 +1,5 @@
 package ui.screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,7 +15,9 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
-import org.example.project.common.*
+import ui.common.CustomizedButton
+import ui.common.EditPasswordField
+import ui.common.EditTextButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,7 +72,7 @@ fun Registration(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                CustomizedButton("Sign Up")
+                CustomizedButton("Sign Up", onClick = {})
 
                 Spacer(modifier = Modifier.height(32.dp))
 

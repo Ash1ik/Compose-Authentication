@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.screen.Login
+import ui.screen.Profile
 import ui.screen.Registration
 
 
@@ -23,6 +24,13 @@ fun App() {
 
         composable("login") {
             Login(
+                onBackClick = { navController.popBackStack() },
+                navController
+            )
+        }
+
+        composable("Profile") {
+            Profile(
                 onBackClick = { navController.popBackStack() }
             )
         }
