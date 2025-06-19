@@ -23,7 +23,8 @@ jobs:
         run: ./gradlew :composeApp:assembleReleaseXCFramework
 
       - name: Upload XCFramework artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ComposeApp.xcframework
-          path: composeApp/build/XCFrameworks/release/ComposeApp.xcframework
+  uses: actions/upload-artifact@v4
+  with:
+    name: ComposeApp.xcframework
+    path: composeApp/build/XCFrameworks/release/ComposeApp.xcframework
+
