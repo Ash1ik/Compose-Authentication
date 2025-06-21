@@ -15,6 +15,10 @@ import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
+import api.SignUpRequest
+import api.sendSignUpRequest
+import io.ktor.http.isSuccess
+import kotlinx.coroutines.launch
 import ui.common.CustomizedButton
 import ui.common.EditPasswordField
 import ui.common.EditTextButton
@@ -25,6 +29,16 @@ fun Registration(navController: NavController) {
 
     val focusManager = LocalFocusManager.current
     val snackbarHostState = remember { SnackbarHostState() }
+
+    var name by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+
+    var isLoading by remember { mutableStateOf(false) }
+
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -65,14 +79,55 @@ fun Registration(navController: NavController) {
             ) {
                 Spacer(modifier = Modifier.height(32.dp))
 
-                EditTextButton("Enter your name", "Name")
-                EditTextButton("Enter your email", "Email")
-                EditPasswordField("Enter your password", "Password")
-                EditPasswordField("Re-Enter your password", "Confirm Password")
+                EditTextButton("Enter your name", "Name", value = name, onValueChange = { name = it })
+                //EditTextButton("Enter your phone", "Phone", value = phone, onValueChange = { phone = it })
+                EditTextButton("Enter your email", "Email", value = email, onValueChange = { email = it })
+                EditPasswordField("Enter your password", "Password", value = password, onValueChange = { password = it })
+                EditPasswordField("Re-Enter your password", "Confirm Password", value = confirmPassword, onValueChange = { confirmPassword = it })
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                CustomizedButton("Sign Up", onClick = {})
+                CustomizedButton("Sign Up", onClick = {
+                    if (password == confirmPassword) {
+//                        val request = SignUpRequest(
+//                            name = name,
+//                            calling_code = "880",
+//                            phone = phone,
+//                            email = email,
+//                            password = password,
+//                            c_password = confirmPassword
+//                        )
+                        val request = SignUpRequest(
+                            username = name,
+                            email = email,
+                            password1 = password,
+                            password2 = confirmPassword
+                        )
+                        scope.launch {
+                            isLoading = true
+                            try {
+                                val response = sendSignUpRequest(request)
+                                if (response.status.isSuccess()) {
+                                    snackbarHostState.showSnackbar("Success: ${response.status}")
+                                    navController.navigate("login") {
+                                        popUpTo("registration") { inclusive = true }
+                                    }
+                                } else {
+                                    snackbarHostState.showSnackbar("Registration failed: ${response.status}")
+                                }
+                            } catch (e: Exception) {
+                                snackbarHostState.showSnackbar("Error: ${e.message ?: "Unknown error"}")
+                            } finally {
+                                isLoading = false
+                            }
+                        }
+                    } else {
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Passwords do not match")
+                        }
+                    }
+                },isLoading)
+
 
                 Spacer(modifier = Modifier.height(32.dp))
 

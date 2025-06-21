@@ -28,18 +28,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun EditTextButton(textName: String, name: String) {
-
-    var text by remember { mutableStateOf("") }
-    val isError = text.length > 40
-    val isValid = text.isNotEmpty() && !isError
+fun EditTextButton(
+    textName: String,
+    name: String,
+    value: String,
+    onValueChange: (String) -> Unit
+) {
+    val isError = value.length > 40
+    val isValid = value.isNotEmpty() && !isError
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column(
-        modifier = Modifier.padding(vertical = 8.dp)
-//            .clickable{ focusManager.clearFocus() }
-    ) {
+    Column(modifier = Modifier.padding(vertical = 8.dp)) {
         Text(
             text = textName,
             style = TextStyle(
@@ -51,11 +51,9 @@ fun EditTextButton(textName: String, name: String) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-
-
         OutlinedTextField(
-            value = text.take(40),
-            onValueChange = { text = it },
+            value = value.take(40),
+            onValueChange = onValueChange,
             label = { Text(name) },
             singleLine = true,
             isError = isError,
@@ -69,7 +67,7 @@ fun EditTextButton(textName: String, name: String) {
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = when {
                     isError -> Color.Red
-                    isValid -> Color(0xFF4CAF50) // Green
+                    isValid -> Color(0xFF4CAF50)
                     else -> Color.Gray
                 },
                 unfocusedBorderColor = when {
@@ -85,8 +83,5 @@ fun EditTextButton(textName: String, name: String) {
                 .height(62.dp),
             shape = RoundedCornerShape(16.dp)
         )
-
     }
-
-
 }

@@ -21,6 +21,7 @@ materialIconsExtended = "1.7.8"
 materialIconsExtendedVersion = "1.6.0"
 navigationCompose = "2.7.0-alpha07"
 resources = "<version>"
+ktor = "2.3.12"
 
 [libraries]
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
@@ -42,6 +43,14 @@ material-icons-extended = { module = "org.jetbrains.compose.material:material-ic
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 resources = { module = "org.jetbrains.compose.resources:resources", version.ref = "resources" }
 
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
@@ -49,3 +58,13 @@ composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "com
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+[bundles]
+ktor = [
+    "ktor-client-core",
+    "ktor-client-content-negotiation",
+    "ktor-client-auth",
+    "ktor-client-logging",
+    "ktor-serialization-kotlinx-json",
+]

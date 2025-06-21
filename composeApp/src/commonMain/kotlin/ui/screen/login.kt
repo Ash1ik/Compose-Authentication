@@ -19,6 +19,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -36,6 +40,11 @@ import ui.common.EditTextButton
 fun Login(onBackClick: () -> Unit,navController: NavController) {
 
     val focusManager = LocalFocusManager.current
+    var isLoading by remember { mutableStateOf(false) }
+
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -78,12 +87,16 @@ fun Login(onBackClick: () -> Unit,navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            EditTextButton("Enter your email", "Email")
-            EditPasswordField("Enter your password", "Password")
+            EditTextButton("Enter your name", "Name", value = name , onValueChange = { name = it })
+            EditTextButton("Enter your email", "Email", value = email , onValueChange = { email = it })
+            EditPasswordField("Enter your password", "Password", value = password, onValueChange = { password = it })
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            CustomizedButton("Log In", onClick = { navController.navigate("Profile") })
+            CustomizedButton(
+                "Log In", onClick = { navController.navigate("Profile") },
+                isLoading = isLoading
+            )
         }
     }
 }

@@ -41,13 +41,17 @@ import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
-fun EditPasswordField(textName: String, name: String) {
-    var text by remember { mutableStateOf("") }
+fun EditPasswordField(
+    textName: String,
+    name: String,
+    value: String,
+    onValueChange: (String) -> Unit
+) {
     var isPasswordVisible by remember { mutableStateOf(false) }
 
-    val isTooShort = text.isNotEmpty() && text.length < 8
-    val isTooLong = text.length > 40
-    val isValid = text.length in 8..40
+    val isTooShort = value.isNotEmpty() && value.length < 8
+    val isTooLong = value.length > 40
+    val isValid = value.length in 8..40
 
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -64,12 +68,9 @@ fun EditPasswordField(textName: String, name: String) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-
-
-
         OutlinedTextField(
-            value = text.take(40),
-            onValueChange = { text = it },
+            value = value.take(40),
+            onValueChange = onValueChange,
             label = { Text(name) },
             placeholder = { Text(name, fontSize = 14.sp) },
             singleLine = true,
@@ -87,9 +88,7 @@ fun EditPasswordField(textName: String, name: String) {
             ),
             trailingIcon = {
                 IconButton(
-                    onClick = {
-                        isPasswordVisible = !isPasswordVisible
-                    },
+                    onClick = { isPasswordVisible = !isPasswordVisible },
                     colors = IconButtonDefaults.iconButtonColors(
                         contentColor = if (isPasswordVisible) Color(0xFF4CAF50) else Color.Gray
                     )

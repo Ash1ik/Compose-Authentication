@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -41,6 +43,8 @@ kotlin {
                 implementation(libs.navigation.compose)
                 implementation(libs.coil.compose)
                 implementation(libs.material.icons.extended)
+
+                implementation(libs.bundles.ktor)
             }
         }
 
@@ -48,13 +52,21 @@ kotlin {
             dependencies {
                 implementation(compose.preview)
                 implementation(libs.androidx.activity.compose)
+
+                implementation(libs.ktor.client.okhttp)
             }
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
 
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation(libs.kotlinx.coroutinesSwing)
+
+                implementation(libs.ktor.client.okhttp)
             }
         }
 
