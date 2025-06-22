@@ -7,18 +7,35 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.example.project.SessionManager
 import ui.screen.Login
 import ui.screen.Profile
 import ui.screen.Registration
 
-
 @Composable
 @Preview
 fun App() {
-
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = "Registration") {
+    LaunchedEffect(Unit) {
+        val name = SessionManager.getUserName()
+        val email = SessionManager.getUserEmail()
+        if (SessionManager.isLoggedIn()) {
+            navController.navigate("Profile/$name/$email") {
+                popUpTo("Launcher") { inclusive = true }
+            }
+        } else {
+            navController.navigate("Registration") {
+                popUpTo("Launcher") { inclusive = true }
+            }
+        }
+    }
+
+    NavHost(navController = navController, startDestination = "Launcher") {
+
+        composable("Launcher") {
+            // This screen is just a launching trampoline and can be left empty
+        }
 
         composable("Registration") {
             Registration(navController)
@@ -27,7 +44,7 @@ fun App() {
         composable("login") {
             Login(
                 onBackClick = { navController.popBackStack() },
-                navController
+                navController = navController
             )
         }
 
@@ -43,9 +60,9 @@ fun App() {
             Profile(
                 userName = name,
                 userEmail = email,
+                navController = navController,
                 onBackClick = { navController.popBackStack() }
             )
         }
     }
-
 }

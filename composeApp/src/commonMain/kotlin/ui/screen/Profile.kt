@@ -6,6 +6,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,10 +55,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import api.sendLogoutRequest
 import authentication.composeapp.generated.resources.Res
 import authentication.composeapp.generated.resources.smoke_man
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import org.example.project.SessionManager
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,9 +69,11 @@ import org.jetbrains.compose.resources.painterResource
 fun Profile(
     userName: String,
     userEmail: String,
+    navController: NavController,
     onBackClick: () -> Unit
 ) {
     val drawerOpen = remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     Box(modifier = Modifier.fillMaxSize()) {
         // Main Content with TopAppBar
@@ -148,7 +154,28 @@ fun Profile(
                 }
                 Text("Settings", fontWeight = FontWeight.Bold)
                 Spacer(Modifier.height(8.dp))
-                Text("Logout")
+                val token = SessionManager.getAuthToken()
+                Text(
+                    text = "Logout",
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .clickable {
+                            scope.launch {
+                                try {
+                                    sendLogoutRequest(token)
+                                    navController.navigate("Registration") {
+                                        popUpTo("Profile") { inclusive = true }
+                                    }
+                                    SessionManager.logout()
+                                } catch (e: Exception) {
+                                    println("Logout failed: ${e.message}")
+                                }
+                            }
+                        }
+                        .padding(8.dp)
+                )
+
             }
         }
     }

@@ -40,6 +40,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.example.project.SessionManager
 import ui.common.CustomizedButton
 import ui.common.EditPasswordField
 import ui.common.EditTextButton
@@ -108,22 +109,28 @@ fun Login(onBackClick: () -> Unit,navController: NavController) {
                 name = "Login",
                 onClick = {
                     val request = SignInRequest(identity, password)
+                    isLoading = true
+
                     scope.launch {
-                        isLoading = true
                         try {
                             val response = withContext(Dispatchers.IO) {
                                 sendSignInRequest(request)
                             }
                             val user = response.data.auth_user
+                            val token = response.data.api_token
                             val name = user.name
                             val email = user.email
 
-                            navController.navigate("Profile/$name/$email") {
-                                popUpTo("login") { inclusive = true }
+                            SessionManager.login(name, email,token)
+
+                            // 🚨 Delay navigation by a tick to avoid coroutine finishing too early
+                            withContext(Dispatchers.Main) {
+                                navController.navigate("Profile/$name/$email") {
+                                    popUpTo("login") { inclusive = true }
+                                }
                             }
 
                         } catch (e: Exception) {
-                            println("Snackbar: ${e.message}")
                             snackbarHostState.showSnackbar("Error: ${e.message ?: "Unknown error"}")
                         } finally {
                             isLoading = false
@@ -132,6 +139,7 @@ fun Login(onBackClick: () -> Unit,navController: NavController) {
                 },
                 isLoading = isLoading
             )
+
 
 
 

@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import ui.common.CustomizedButton
 import ui.common.EditPasswordField
 import ui.common.EditTextButton
+import ui.common.PhoneNumberField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,7 +81,7 @@ fun Registration(navController: NavController) {
                 Spacer(modifier = Modifier.height(32.dp))
 
                 EditTextButton("Enter your name", "Name", value = name, onValueChange = { name = it })
-                EditTextButton("Enter your phone", "Phone", value = phone, onValueChange = { phone = it })
+                PhoneNumberField(textName = "Enter phone number", phoneNumber = phone, onPhoneChange = { phone = it })
                 EditTextButton("Enter your email", "Email", value = email, onValueChange = { email = it })
                 EditPasswordField("Enter your password", "Password", value = password, onValueChange = { password = it })
                 EditPasswordField("Re-Enter your password", "Confirm Password", value = confirmPassword, onValueChange = { confirmPassword = it })

@@ -45,6 +45,9 @@ kotlin {
                 implementation(libs.material.icons.extended)
 
                 implementation(libs.bundles.ktor)
+                implementation(libs.com.russhwolf.multiplatform.settings.v130.x2)
+                implementation(libs.multiplatform.settings.coroutines)
+                implementation(libs.multiplatform.settings.no.arg)
             }
         }
 
@@ -54,11 +57,17 @@ kotlin {
                 implementation(libs.androidx.activity.compose)
 
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.com.russhwolf.multiplatform.settings.v130.x2)
+                implementation(libs.multiplatform.settings.coroutines)
+                implementation(libs.multiplatform.settings.no.arg)
             }
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.com.russhwolf.multiplatform.settings.v130.x2)
+            implementation(libs.multiplatform.settings.coroutines)
+            implementation(libs.multiplatform.settings.no.arg)
         }
 
         val desktopMain by getting {
@@ -67,6 +76,9 @@ kotlin {
                 implementation(libs.kotlinx.coroutinesSwing)
 
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.com.russhwolf.multiplatform.settings.v130.x2)
+                implementation(libs.multiplatform.settings.coroutines)
+                implementation(libs.multiplatform.settings.no.arg)
             }
         }
 
