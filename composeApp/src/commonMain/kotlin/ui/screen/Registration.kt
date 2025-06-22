@@ -80,7 +80,7 @@ fun Registration(navController: NavController) {
                 Spacer(modifier = Modifier.height(32.dp))
 
                 EditTextButton("Enter your name", "Name", value = name, onValueChange = { name = it })
-                //EditTextButton("Enter your phone", "Phone", value = phone, onValueChange = { phone = it })
+                EditTextButton("Enter your phone", "Phone", value = phone, onValueChange = { phone = it })
                 EditTextButton("Enter your email", "Email", value = email, onValueChange = { email = it })
                 EditPasswordField("Enter your password", "Password", value = password, onValueChange = { password = it })
                 EditPasswordField("Re-Enter your password", "Confirm Password", value = confirmPassword, onValueChange = { confirmPassword = it })
@@ -89,19 +89,13 @@ fun Registration(navController: NavController) {
 
                 CustomizedButton("Sign Up", onClick = {
                     if (password == confirmPassword) {
-//                        val request = SignUpRequest(
-//                            name = name,
-//                            calling_code = "880",
-//                            phone = phone,
-//                            email = email,
-//                            password = password,
-//                            c_password = confirmPassword
-//                        )
                         val request = SignUpRequest(
-                            username = name,
+                            name = name,
+                            calling_code = "880",
+                            phone = phone,
                             email = email,
-                            password1 = password,
-                            password2 = confirmPassword
+                            password = password,
+                            c_password = confirmPassword
                         )
                         scope.launch {
                             isLoading = true
@@ -110,7 +104,7 @@ fun Registration(navController: NavController) {
                                 if (response.status.isSuccess()) {
                                     snackbarHostState.showSnackbar("Success: ${response.status}")
                                     navController.navigate("login") {
-                                        popUpTo("registration") { inclusive = true }
+                                        popUpTo("Registration") { inclusive = true }
                                     }
                                 } else {
                                     snackbarHostState.showSnackbar("Registration failed: ${response.status}")
@@ -167,4 +161,3 @@ fun SignInText(onSignInClick: () -> Unit) {
         modifier = Modifier.padding(top = 12.dp)
     )
 }
-

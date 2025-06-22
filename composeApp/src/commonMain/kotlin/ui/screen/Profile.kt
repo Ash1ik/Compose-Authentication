@@ -62,7 +62,11 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Profile(onBackClick: () -> Unit) {
+fun Profile(
+    userName: String,
+    userEmail: String,
+    onBackClick: () -> Unit
+) {
     val drawerOpen = remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -106,14 +110,14 @@ fun Profile(onBackClick: () -> Unit) {
 
                 TextView(
                     labelName = "Username",
-                    mainText = "Ashik"
+                    mainText = userName
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextView(
                     labelName = "Email I'd",
-                    mainText = "Email Id"
+                    mainText = userEmail
                 )
             }
         }
