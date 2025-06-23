@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -26,7 +28,7 @@ import ui.common.PhoneNumberField
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Registration(navController: NavController) {
+fun Registration(onBackClick: () -> Unit,navController: NavController) {
 
     val focusManager = LocalFocusManager.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -44,6 +46,7 @@ fun Registration(navController: NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
+                modifier = Modifier.height(60.dp),
                 title = {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
@@ -53,6 +56,14 @@ fun Registration(navController: NavController) {
                             text = "Register",
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
                         )
                     }
                 }
@@ -73,12 +84,10 @@ fun Registration(navController: NavController) {
         ) {
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 16.dp)
                     .verticalScroll(rememberScrollState())
                     .align(Alignment.TopCenter),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(32.dp))
 
                 EditTextButton("Enter your name", "Name", value = name, onValueChange = { name = it })
                 PhoneNumberField(textName = "Enter phone number", phoneNumber = phone, onPhoneChange = { phone = it })
@@ -103,12 +112,12 @@ fun Registration(navController: NavController) {
                             try {
                                 val response = sendSignUpRequest(request)
                                 if (response.status.isSuccess()) {
-                                    snackbarHostState.showSnackbar("Success: ${response.status}")
+                                    snackbarHostState.showSnackbar("Successfully registered please login")
                                     navController.navigate("login") {
                                         popUpTo("Registration") { inclusive = true }
                                     }
                                 } else {
-                                    snackbarHostState.showSnackbar("Registration failed: ${response.status}")
+                                    snackbarHostState.showSnackbar("Please enter email/pass correctly")
                                 }
                             } catch (e: Exception) {
                                 snackbarHostState.showSnackbar("Error: ${e.message ?: "Unknown error"}")
@@ -123,14 +132,6 @@ fun Registration(navController: NavController) {
                     }
                 },isLoading)
 
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                SignInText(
-                    onSignInClick = {
-                        navController.navigate("login")
-                    }
-                )
             }
         }
     }
@@ -145,7 +146,7 @@ fun SignInText(onSignInClick: () -> Unit) {
         }
         pushStringAnnotation(tag = "SIGN_IN", annotation = "sign_in")
         withStyle(style = SpanStyle(color = Color.Black, fontWeight = FontWeight.Bold)) {
-            append("Sign in")
+            append("Sign up")
         }
         pop()
     }

@@ -25,7 +25,7 @@ fun App() {
                 popUpTo("Launcher") { inclusive = true }
             }
         } else {
-            navController.navigate("Registration") {
+            navController.navigate("login") {
                 popUpTo("Launcher") { inclusive = true }
             }
         }
@@ -38,12 +38,14 @@ fun App() {
         }
 
         composable("Registration") {
-            Registration(navController)
+            Registration(
+                onBackClick = { navController.popBackStack() },
+                navController
+            )
         }
 
         composable("login") {
             Login(
-                onBackClick = { navController.popBackStack() },
                 navController = navController
             )
         }

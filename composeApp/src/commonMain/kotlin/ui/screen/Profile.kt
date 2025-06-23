@@ -92,11 +92,11 @@ fun Profile(
                             )
                         }
                     },
-                    navigationIcon = {
-                        IconButton(onClick = onBackClick) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                        }
-                    },
+//                    navigationIcon = {
+//                        IconButton(onClick = onBackClick) {
+//                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+//                        }
+//                    },
                     actions = {
                         IconButton(onClick = { drawerOpen.value = true }) {
                             Icon(Icons.Default.Menu, contentDescription = "Open Drawer")
@@ -228,24 +228,24 @@ fun ProfileContent(padding: PaddingValues) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-
-            },
-            modifier = Modifier
-                .width(110.dp)
-                .height(36.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Black
-            ),
-            shape = RoundedCornerShape(5.dp),
-            elevation = ButtonDefaults.buttonElevation(4.dp)
-        ) {
-            Text(
-                text = "Edit Profile",
-                fontSize = 12.sp
-            )
-        }
+//        Button(
+//            onClick = {
+//
+//            },
+//            modifier = Modifier
+//                .width(110.dp)
+//                .height(36.dp),
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = Color.Black
+//            ),
+//            shape = RoundedCornerShape(5.dp),
+//            elevation = ButtonDefaults.buttonElevation(4.dp)
+//        ) {
+//            Text(
+//                text = "Edit Profile",
+//                fontSize = 12.sp
+//            )
+//        }
     }
 }
 

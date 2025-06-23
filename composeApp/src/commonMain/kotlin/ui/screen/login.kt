@@ -47,7 +47,7 @@ import ui.common.EditTextButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Login(onBackClick: () -> Unit,navController: NavController) {
+fun Login(navController: NavController) {
 
     val focusManager = LocalFocusManager.current
     var isLoading by remember { mutableStateOf(false) }
@@ -70,14 +70,6 @@ fun Login(onBackClick: () -> Unit,navController: NavController) {
                             text = "Login",
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold
-                        )
-                    }
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back"
                         )
                     }
                 }
@@ -108,41 +100,54 @@ fun Login(onBackClick: () -> Unit,navController: NavController) {
             CustomizedButton(
                 name = "Login",
                 onClick = {
-                    val request = SignInRequest(identity, password)
-                    isLoading = true
+                    if (identity.isNotEmpty() && password.isNotEmpty()) {
+                        // Proceed with login
+                        val request = SignInRequest(identity, password)
+                        isLoading = true
 
-                    scope.launch {
-                        try {
-                            val response = withContext(Dispatchers.IO) {
-                                sendSignInRequest(request)
-                            }
-                            val user = response.data.auth_user
-                            val token = response.data.api_token
-                            val name = user.name
-                            val email = user.email
-
-                            SessionManager.login(name, email,token)
-
-                            // 🚨 Delay navigation by a tick to avoid coroutine finishing too early
-                            withContext(Dispatchers.Main) {
-                                navController.navigate("Profile/$name/$email") {
-                                    popUpTo("login") { inclusive = true }
+                        scope.launch {
+                            try {
+                                val response = withContext(Dispatchers.IO) {
+                                    sendSignInRequest(request)
                                 }
-                            }
+                                val user = response.data.auth_user
+                                val token = response.data.api_token
+                                val name = user.name
+                                val email = user.email
 
-                        } catch (e: Exception) {
-                            snackbarHostState.showSnackbar("Error: ${e.message ?: "Unknown error"}")
-                        } finally {
-                            isLoading = false
+                                SessionManager.login(name, email,token)
+
+                                // Delay navigation by a tick to avoid coroutine finishing too early
+                                withContext(Dispatchers.Main) {
+                                    navController.navigate("Profile/$name/$email") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                }
+
+                            } catch (e: Exception) {
+                                snackbarHostState.showSnackbar("Please enter email/pass correctly")
+                            } finally {
+                                isLoading = false
+                            }
+                        }
+                    } else {
+                        // Show error message
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Please enter email & pass")
                         }
                     }
+
                 },
                 isLoading = isLoading
             )
 
+            Spacer(modifier = Modifier.height(8.dp))
 
-
-
+            SignInText(
+                onSignInClick = {
+                    navController.navigate("Registration")
+                }
+            )
 
         }
     }
